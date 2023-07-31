@@ -18,8 +18,6 @@ public class LimeOberhausenFlattener extends Command {
      */
     @Override
     public List<JsonObject> apply(Object buffer) {
-
-
         String nestedJsonString = ((Buffer) buffer).toString();
         JsonObject arrayOfNestedJsonItems = new JsonObject(nestedJsonString);
         List<JsonObject> flatItems = flatten(arrayOfNestedJsonItems);
@@ -36,19 +34,16 @@ public class LimeOberhausenFlattener extends Command {
      * application of each node in the original nested JSON containing only the
      * supported info points
      */
-    private List<JsonObject> flatten(JsonObject nestedJsonItems) {
-
+    private List<JsonObject> flatten(JsonObject nestedJsonItems) 
+    {
         try {
             List<JsonObject> flatItems = new LinkedList<>();
-
             JsonObject data = nestedJsonItems.getJsonObject("data");
             JsonArray bikes = data.getJsonArray("bikes");
 
             for(int i=0; i < bikes.size();i++)
             {
-
                 JsonObject bike = bikes.getJsonObject(i);
-
                 flatItems.add(bike);
                 System.out.println("FLAT ITEM  : " + bike);
             }
@@ -60,5 +55,4 @@ public class LimeOberhausenFlattener extends Command {
         }
         return null;
     }
-
 }
