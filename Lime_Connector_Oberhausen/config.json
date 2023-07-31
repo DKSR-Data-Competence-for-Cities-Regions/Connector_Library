@@ -11,10 +11,7 @@
       "outputAddress": "PreProcessing",
       "host": "host of lime",
       "port": "port from lime",
-      "path": "city specific path, e. g. api/oberhausen/gbfs/...",
-      "encrypted": true,
-      "trustAll": false,
-      "pipelining": false
+      "path": "city specific path, e. g. api/oberhausen/gbfs/..."      
     },
 
     "de.urbanpulse.connector.sdk.core.runtime.preprocessing.PreProcessorVerticle": {
