@@ -4,7 +4,6 @@ import de.urbanpulse.connector.sdk.core.runtime.preprocessing.Command;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-
 import java.util.LinkedList;
 import java.util.List;
 
