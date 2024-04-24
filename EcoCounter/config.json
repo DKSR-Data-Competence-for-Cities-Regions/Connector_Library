@@ -1,0 +1,161 @@
+{
+  "verticles": {
+    "de.urbanpulse.connector.sdk.inbound.InboundTriggerVerticle": {
+      "period": 86400000,
+      "outputAddress": "Inbound"
+    },
+    "ecoCounterVerticle": {
+      "classname": "de.urbanpulse.connector.sdk.inbound.HttpRequestVerticle",
+      "inputAddress": "Inbound",
+      "outputAddress": "PreProcessing",
+      "host": "",
+      "port": "",
+      "path": "",
+      "encrypted": true,
+      "trustAll": false,
+      "pipelining": false
+    },
+
+    "de.urbanpulse.connector.sdk.core.runtime.preprocessing.PreProcessorVerticle": {
+      "inputAddress": "PreProcessing",
+      "outputAddress": "Processing",
+      "commands": [
+        {
+          "classname": ""
+        }
+      ]
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.processing.DefaultProcessingVerticle": {
+      "inputAddress": "Processing",
+      "outputAddress": "Outbound"
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.outbound.SDKConnectorVerticle": {
+      "inputAddress": "Outbound",
+      "upManagement": {
+        "username": "",
+        "password": "",
+        "trustAll": true,
+        "baseUrl": ""
+      },
+      "connectorName": "EcoCounterFreiburgConnector",
+      "statementsConfig": {
+        "EcoCounterFreiburgEventTypeStatement": {
+          "query": "SELECT * FROM EcoCounterFreiburgEventType",
+          "targets": [
+            ""
+          ]
+        }
+      },
+      "eventSenderAddresses": {
+        "inputVertLogger": "loggerVerticle",
+        "inputVertHTTP": "httpVerticle"
+      },
+      "sensorEventFactoryConfig": {
+        "eventTypeName": "EcoCounterFreiburgEventType",
+        "eventTypeAcquisitionStrategy": "manual",
+        "eventType": {
+          "description": {
+            "timestamp_ecocounter" : "timestamp of data retrieval",
+            "count" : "Count of vehicles",
+            "stand" : "Stand Value",
+            "placementLocation" : "Where the sensor is placed",
+            "channel_name" : "Description of Channel",
+            "channel_id" : "ID of Channel",
+            "counter_site_location" : "Counter Site location",
+            "counter_site_id" : "ID of Counter Site",
+            "domain_name" : "Domain name",
+            "domain_id" : "Domain ID",
+            "lon" : "longitude",
+            "lat": "latitude",
+            "timezone" : "timezone",
+            "interval" : "interval time in minutes",
+            "counter_serial" : "counter serial number"
+          },
+          "config": {
+            "timestamp_ecocounter" : "string",
+            "count" : "double",
+            "stand" : "double",
+            "placementLocation" : "string",
+            "channel_name" : "string",
+            "channel_id" : "double",
+            "counter_site_location" : "string",
+            "counter_site_id" : "double",
+            "domain_name" : "string",
+            "domain_id" : "double",
+            "lon" : "double",
+            "lat": "double",
+            "timezone" : "string",
+            "interval" : "double",
+            "counter_serial" : "string"
+          }
+        },
+        "primaryKeyFields": ["counter_serial"]
+      },
+      "categoryFactory": "de.urbanpulse.connector.sdk.core.CategoryFactoryJsonImpl",
+      "sensorEventFactory": "de.urbanpulse.connector.sdk.core.runtime.SensorEventFactoryJsonConfigImpl",
+      "sensorFactory": "de.urbanpulse.connector.sdk.core.SensorFactoryDefaultImpl"
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleHttp": {
+      "inputAddress": "httpVerticle",
+      "senderConfig": {
+        "url": "",
+        "connectorId": "filled by sdk",
+        "connectorKey": "filled by sdk",
+        "trustAll": true
+      },
+      "queueConfig": {
+      }
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleLogger": {
+      "inputAddress": "loggerVerticle",
+      "senderConfig": {
+      },
+      "queueConfig": {
+      }
+    }
+  },
+  "deploymentOrder": [
+    {
+      "verticle": "ecoCounterVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.preprocessing.PreProcessorVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.processing.DefaultProcessingVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleHttp",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleLogger",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.outbound.SDKConnectorVerticle",
+      "instances": 1,
+      "isWorker": true,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.inbound.InboundTriggerVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    }
+  ]
+}
