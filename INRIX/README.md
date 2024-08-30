@@ -9,9 +9,10 @@ This connector consumes data from Eco Counter HTTPS API which provides the detai
 please refer  to https://docs.inrix.com/traffic/segmentspeed/ for further details 
 
 
-# Sample schema that is used in the connector
+# Schema that used in the connector
 
-`"description": {
+```
+"description": {
 "createdDate": "date of creation of inrix data",
 "statusId": "status id of inrix data",
 "statusText": "statusText for inrix data",
@@ -43,11 +44,12 @@ please refer  to https://docs.inrix.com/traffic/segmentspeed/ for further detail
 "c-value": "double",
 "speedBucket": "double"
 }
-`
+```
 
-# Sample JSON data tha will be sent to OUP,
+# Sample JSON data sent to OUP,
 
-`{
+```
+{
 "coverage" : 8.0,
 "average" : 29.0,
 "code" : "XXXXXXXXXXXXXXXXXXXX",
@@ -64,4 +66,5 @@ please refer  to https://docs.inrix.com/traffic/segmentspeed/ for further detail
 "travelTimeMinutes" : 0.069,
 "responseId" : "XXXXXXXXXXXXXXXXXXXX",
 "timestamp" : "2022-08-25T13:38:53.165Z"
-},`
+},
+```
