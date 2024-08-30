@@ -15,16 +15,3 @@ https://github.com/DKSR-Data-Competence-for-Cities-Regions/DKSR-Connector-SDK/wi
 After setting up and creating a fat jar for the connector, add the platform and API details on config.json and run the connector as mentioned in the below link,
 
 https://github.com/DKSR-Data-Competence-for-Cities-Regions/DKSR-Connector-SDK/wiki/Creating-a-connector
-
-# Sample JSON data tha will be sent to OUP,
-
-{
-"is_reserved" : 0,
-"is_disabled" : 0,
-"vehicle_type" : "scooter",
-"lon" : 61.8354,
-"bike_id" : "xxxxx-xxx-xxx-xx-xxxxxxx",
-"lat" : 15.5106,
-"timestamp" : "2023-07-03T09:51:52.624Z",
-"SID" : "xxxxx-xxx-xxx-xx-xxxxxxx"
-},
