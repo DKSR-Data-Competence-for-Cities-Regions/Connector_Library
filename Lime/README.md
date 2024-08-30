@@ -32,7 +32,8 @@ please refer  to https://lime.openfl.org/api/ for further details
 
 # Sample JSON data that is sent to OUP
 
-```{
+```
+{
 "is_reserved" : 0,
 "is_disabled" : 0,
 "vehicle_type" : "scooter",
