@@ -9,9 +9,9 @@ This connector consumes data from Lime HTTPS API which provides the details abou
 please refer  to https://lime.openfl.org/api/ for further details 
 
 
-# Sample schema that is used in the connector
+# Schema that is used in the connector
 
-`"description": {
+```"description": {
 "bike_id": "Id of the bike",
 "lat": "latitude of the station",
 "lon": "longitude of the station",
@@ -26,11 +26,11 @@ please refer  to https://lime.openfl.org/api/ for further details
 "is_reserved": "double",
 "is_disabled": "double",
 "vehicle_type": "string"
-}`
+}```
 
-# Sample JSON data tha will be sent to OUP,
+# Sample JSON data that is sent to OUP
 
-`{
+```{
 "is_reserved" : 0,
 "is_disabled" : 0,
 "vehicle_type" : "scooter",
@@ -39,4 +39,4 @@ please refer  to https://lime.openfl.org/api/ for further details
 "lat" : 15.5106,
 "timestamp" : "2023-07-03T09:51:52.624Z",
 "SID" : "xxxxx-xxx-xxx-xx-xxxxxxx"
-},`
+},```
