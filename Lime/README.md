@@ -28,12 +28,11 @@ please refer  to https://lime.openfl.org/api/ for further details
 "is_disabled": "double",
 "vehicle_type": "string"
 }
-
+```
 
 # Sample JSON data that is sent to OUP
 
-```
-{
+```{
 "is_reserved" : 0,
 "is_disabled" : 0,
 "vehicle_type" : "scooter",
@@ -43,4 +42,4 @@ please refer  to https://lime.openfl.org/api/ for further details
 "timestamp" : "2023-07-03T09:51:52.624Z",
 "SID" : "xxxxx-xxx-xxx-xx-xxxxxxx"
 },
-
+```
