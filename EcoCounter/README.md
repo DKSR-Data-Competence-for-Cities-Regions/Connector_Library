@@ -9,9 +9,10 @@ This connector consumes data from Eco-counter HTTPS API which provides the detai
 please refer  to https://developers.eco-counter.com/ for further details 
 
 
-# Sample schema that is used in the connector
+# Schema that used in the connector
 
-`"description": {
+```
+"description": {
 "timestamp_ecocounter" : "timestamp of data retrieval",
 "count" : "Count of vehicles",
 "stand" : "Stand Value",
@@ -45,11 +46,12 @@ please refer  to https://developers.eco-counter.com/ for further details
 "interval" : "double",
 "counter_serial" : "string"
 }
-`
+```
 
-# Sample JSON data tha will be sent to OUP,
+# Sample JSON data sent to OUP,
 
-`{
+```
+{
 "channel_name" : "XXXXXXXXXXX",
 "timezone" : "XXXXXXXXXXXT",
 "count" : 77.0,
@@ -67,4 +69,5 @@ please refer  to https://developers.eco-counter.com/ for further details
 "counter_serial" : "XXXXXXXXXXX",
 "lat" : 14.99984,
 "timestamp" : "2022-10-25T09:52:12.874Z"
-}`
+}
+```
