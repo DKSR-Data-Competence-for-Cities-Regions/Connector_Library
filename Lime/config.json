@@ -22,7 +22,7 @@
       "outputAddress": "Processing",
       "commands": [
         {
-          "classname": "de.dksr.city.LimeOberhausenFlattener"
+          "classname": "de.dksr.city.LimeFlattener"
         }
       ]
     },
