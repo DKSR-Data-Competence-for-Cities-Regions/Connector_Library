@@ -38,7 +38,6 @@ public class LimeFlattener extends Command {
      */
     private List<JsonObject> flatten(JsonObject nestedJsonItems) {
 
-        try {
             List<JsonObject> flatItems = new LinkedList<>();
 
             JsonObject data = nestedJsonItems.getJsonObject("data");
@@ -50,12 +49,6 @@ public class LimeFlattener extends Command {
                 flatItems.add(bike);
             }
             return flatItems;
-        }
-        catch(Exception exp)
-        {
-            exp.printStackTrace();
-        }
-        return null;
     }
 
 }
