@@ -10,10 +10,11 @@ import java.util.List;
 import io.vertx.core.json.JsonArray;
 
 
-public class INRIXFreiburgFlattenerCommand extends Command {
+public class INRIXFlattenerCommand extends Command {
 
 
     /**
+     * This method is responsible for parsing the API data to flat JSON structure.
      * @param buffer contains the nested JSON string
      * @return List&lt;JsonObject&gt; with flat JSON of each supported
      * application of each node in the original nested JSON containing only the
@@ -30,9 +31,8 @@ public class INRIXFreiburgFlattenerCommand extends Command {
 
 
     /**
-     * This functions flattens the raw JSON object received from the OWM API and
+     * This functions flattens the raw JSON object received from the INRIX API and
      * include only the data required, in desired format.
-     *
      * @param nestedJsonItems raw JSON object received by the Connector
      * @return List&lt;JsonObject&gt; with flat JSON of each supported
      * application of each node in the original nested JSON containing only the
@@ -98,10 +98,6 @@ public class INRIXFreiburgFlattenerCommand extends Command {
                 flatItem.put("score",score);
                 flatItem.put("c-value",cValue);
                 flatItem.put("speedBucket",speedBucket);
-
-
-
-                System.out.println("flatItem : " + flatItem);
                 flatItems.add(flatItem);
 
             }

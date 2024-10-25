@@ -37,10 +37,10 @@
         "trustAll": true,
         "baseUrl": ""
       },
-      "connectorName": "EcoCounterFreiburgConnector",
+      "connectorName": "EcoCounterConnector",
       "statementsConfig": {
-        "EcoCounterFreiburgEventTypeStatement": {
-          "query": "SELECT * FROM EcoCounterFreiburgEventType",
+        "EcoCounterEventTypeStatement": {
+          "query": "SELECT * FROM EcoCounterEventType",
           "targets": [
             ""
           ]
@@ -51,7 +51,7 @@
         "inputVertHTTP": "httpVerticle"
       },
       "sensorEventFactoryConfig": {
-        "eventTypeName": "EcoCounterFreiburgEventType",
+        "eventTypeName": "EcoCounterEventType",
         "eventTypeAcquisitionStrategy": "manual",
         "eventType": {
           "description": {

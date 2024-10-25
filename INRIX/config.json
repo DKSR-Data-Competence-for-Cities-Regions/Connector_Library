@@ -41,8 +41,8 @@
       },
       "connectorName": "INRIXConnector",
       "statementsConfig": {
-        "inrixFreiburgTestDataEventTypeStatement": {
-          "query": "SELECT * FROM inrixDataEventType",
+        "inrixDataEventTypeStatement": {
+          "query": "SELECT * FROM inrixDataEventTypeStatement",
           "targets": [
             ""
           ]

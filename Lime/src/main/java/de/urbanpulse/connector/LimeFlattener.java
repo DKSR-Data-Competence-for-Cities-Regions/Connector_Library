@@ -11,6 +11,7 @@ import java.util.List;
 public class LimeFlattener extends Command {
 
     /**
+     * This method is responsible for parsing the API data to flat JSON structure.
      * @param buffer contains the nested JSON string
      * @return List&lt;JsonObject&gt; with flat JSON of each supported
      * application of each node in the original nested JSON containing only the
@@ -28,9 +29,8 @@ public class LimeFlattener extends Command {
 
 
     /**
-     * This functions flattens the raw JSON object received from the OWM API and
+     * This functions flattens the raw JSON object received from the Lime scooter API and
      * include only the data required, in desired format.
-     *
      * @param nestedJsonItems raw JSON object received by the Connector
      * @return List&lt;JsonObject&gt; with flat JSON of each supported
      * application of each node in the original nested JSON containing only the
@@ -46,11 +46,8 @@ public class LimeFlattener extends Command {
 
             for(int i=0; i < bikes.size();i++)
             {
-
                 JsonObject bike = bikes.getJsonObject(i);
-
                 flatItems.add(bike);
-                System.out.println("FLAT ITEM  : " + bike);
             }
             return flatItems;
         }

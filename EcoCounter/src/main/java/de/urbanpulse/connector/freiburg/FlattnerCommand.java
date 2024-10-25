@@ -5,24 +5,17 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class FreiburgFlattnerCommand extends Command {
+public class FlattnerCommand extends Command {
 
 
     /**
+     * This method is responsible for parsing the API data to flat JSON structure.
      * @param buffer contains the nested JSON string
      * @return List&lt;JsonObject&gt; with flat JSON of each supported
      * application of each node in the original nested JSON containing only the
@@ -31,7 +24,6 @@ public class FreiburgFlattnerCommand extends Command {
     @Override
     public List<JsonObject> apply(Object buffer) {
         String nestedJsonString = ((Buffer) buffer).toString();
-        //JsonObject arrayOfNestedJsonItems = new JsonObject(nestedJsonString);
         List<JsonObject> flatItems = flatten(nestedJsonString);
         return flatItems;
     }
@@ -39,9 +31,8 @@ public class FreiburgFlattnerCommand extends Command {
 
 
     /**
-     * This functions flattens the raw JSON object received from the OWM API and
+     * This functions flattens the raw JSON object received from the EcoCounter API and
      * include only the data required, in desired format.
-     *
      * @param nestedJsonItems raw JSON object received by the Connector
      * @return List&lt;JsonObject&gt; with flat JSON of each supported
      * application of each node in the original nested JSON containing only the
@@ -52,11 +43,8 @@ public class FreiburgFlattnerCommand extends Command {
 
         JsonArray tempArr = new JsonArray(nestedJsonItems);
 
-
-
             for (int i =0; i < tempArr.size(); i++)
             {
-                //JsonObject flatItem = new JsonObject();
                 JsonObject flatItem = tempArr.getJsonObject(i);
                 if(validateData(flatItem.getString("timestamp"),flatItem.getString("counter_serial"))) {
 
@@ -74,16 +62,20 @@ public class FreiburgFlattnerCommand extends Command {
                     flatItem.put("timestamp_ecocounter", flatItem.getString("timestamp"));
                     flatItem.remove("timestamp");
 
-                    System.out.println("flatItem : " + flatItem);
                     flatItems.add(flatItem);
                 }
 
             }
 
-
-
         return flatItems;
     }
+
+    /**
+     * This method validates the data if this received for last 24 hours
+     * @param date date returned by API
+     * @param id id of the sensor
+     * @return
+     */
 
     private boolean validateData(String date, String id)
     {
@@ -98,16 +90,9 @@ public class FreiburgFlattnerCommand extends Command {
 
         LocalDateTime dateTimeMinus = LocalDateTime.now();
 
-        //System.out.println("ID : " + id + ", Input Time : " + date + ", current time minus 1 hour : " + dateTimeMinus.minusHours(24));
-
-
         if(dateTime.isAfter(dateTimeMinus.minusHours(24)) && ids.containsKey(id))
-        //if(ids.containsKey(id))
         {
-            System.out.println("Date 24 hours : " + date);
-
             retVal = true;
-
         }
         return retVal;
     }
