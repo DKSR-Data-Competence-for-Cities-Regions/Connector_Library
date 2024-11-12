@@ -1,0 +1,174 @@
+{
+  "verticles": {
+    "de.urbanpulse.connector.sdk.inbound.InboundTriggerVerticle": {
+      "period": 3600000,
+      "outputAddress": "Inbound"
+    },
+    "openWeatherInboundVerticle": {
+      "classname": "de.urbanpulse.connector.sdk.inbound.HttpRequestVerticle",
+      "inputAddress": "Inbound",
+      "outputAddress": "PreProcessing",
+      "host": "",
+      "port": 80,
+      "path": "",
+      "encrypted": false,
+      "trustAll": false,
+      "pipelining": false
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.preprocessing.PreProcessorVerticle": {
+      "inputAddress": "PreProcessing",
+      "outputAddress": "Processing",
+      "commands": [
+        {
+          "classname": "de.urbanpulse.connector.openWeatherConnector.OpenWeatherFlattener"
+        }
+      ]
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.processing.DefaultProcessingVerticle": {
+      "inputAddress": "Processing",
+      "outputAddress": "Outbound"
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.outbound.SDKConnectorVerticle": {
+      "inputAddress": "Outbound",
+      "upManagement": {
+        "username": "",
+        "password": "",
+        "trustAll": true,
+        "baseUrl": ""
+      },
+      "connectorName": "OpenWeatherDevV1Connector",
+      "statementsConfig": {
+        "openWeatherDevV1EventTypeStatement": {
+          "query": "",
+          "targets": [ "" ]
+        }
+      },
+      "eventSenderAddresses": {
+        "inputVertHTTP": "httpVerticle",
+        "inputVertLogger": "loggerVerticle"
+      },
+      "categoryFactory": "de.urbanpulse.connector.sdk.core.CategoryFactoryDefaultImpl",
+      "sensorEventFactory": "de.urbanpulse.connector.sdk.core.runtime.SensorEventFactoryJsonConfigImpl",
+      "sensorEventFactoryConfig": {
+        "eventTypeName": "openWeatherDevV1EventType",
+        "eventTypeAcquisitionStrategy": "manual",
+        "eventType": {
+          "description": {
+            "countrycode": "Two letter country code",
+            "zipcode": "zipcode of the city",
+            "temp": "Current average temperature in the city in C",
+            "temp_min": "Current minimum measured temperature in the city in C",
+            "temp_max": "Current maximum measured temperature in the city in C",
+            "pressure": "Pressure in hPa",
+            "humidity": "Relative humidity in percentages (0-100)",
+            "sunrise": "Time of next sunrise in UTC?",
+            "sunset": "Time of next sunset in UTC?",
+            "lat": "Latitude",
+            "lon": "Longitude",
+            "wind_speed": "Speed of the wind",
+            "wind_deg": "The deg of the wind",
+            "clouds": "Number of the clouds",
+            "visibility": "Visibility",
+            "weather_id": "Weather condition ID. See http://openweathermap.org/weather-conditions for the list of IDs",
+            "weather_icon": "URL to icon that describes current weather condition",
+            "city": "City Name"
+          },
+          "config": {
+            "countrycode": "string",
+            "zipcode": "double",
+            "temp": "double",
+            "temp_min": "double",
+            "temp_max": "double",
+            "pressure": "long",
+            "humidity": "long",
+            "sunrise": "string",
+            "sunset": "string",
+            "lat": "double",
+            "lon": "double",
+            "wind_speed": "double",
+            "wind_deg": "long",
+            "clouds": "long",
+            "visibility": "long",
+            "weather_id": "long",
+            "weather_icon": "string",
+            "city": "string"
+          }
+        },
+        "primaryKeyFields": ["countrycode","zipcode"]
+      },
+      "sensorFactory": "de.urbanpulse.connector.sdk.core.SensorFactoryDefaultImpl"
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleHttp": {
+      "inputAddress": "httpVerticle",
+      "senderConfig": {
+        "url": "",
+        "connectorId": "filled by sdk",
+        "connectorKey": "filled by sdk",
+        "trustAll": true
+      },
+      "queueConfig": {
+      }
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleLogger": {
+      "inputAddress": "loggerVerticle",
+      "senderConfig": {
+      },
+      "queueConfig": {
+      }
+    },
+    "de.urbanpulse.connector.sdk.core.monitoring.HTTPMonitoringVerticle":  {
+      "host":  "0.0.0.0",
+      "port":  8888
+    }
+  },
+  "deploymentOrder": [
+    {
+      "verticle":  "de.urbanpulse.connector.sdk.core.monitoring.HTTPMonitoringVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "openWeatherInboundVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.preprocessing.PreProcessorVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.processing.DefaultProcessingVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleHttp",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleLogger",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.outbound.SDKConnectorVerticle",
+      "instances": 1,
+      "isWorker": true,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.inbound.InboundTriggerVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    }
+  ]
+}
