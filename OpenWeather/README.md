@@ -60,26 +60,26 @@ please refer  to https://openweathermap.org/api/one-call-3 for further details
 
 ```
  {
-    "weather_id": 804,
+    "weather_id": xxxx,
     "temp": 3.8,
     "sunrise": "2024-01-01T07:07:46.000Z",
     "visibility": 10000,
-    "city": "Augsburg",
-    "countrycode": "DE",
-    "lon": 10.8978,
+    "city": "xxxxxxx",
+    "countrycode": "xxxxxxx",
+    "lon": 99.8978,
     "clouds": 100,
     "pressure": 1010,
     "weather_icon": "04n",
     "feels_like": 0.31,
     "temp_max": 4.58,
-    "SID": "e54f7f91-144a-454e-9dff-926c19d2cd5b",
-    "zipcode": 8010,
+    "SID": "xx-xxx-x-xxxxxxxxxx",
+    "zipcode": xxxx,
     "wind_deg": 240,
     "temp_min": 2.04,
     "sunset": "2024-01-01T15:31:14.000Z",
     "humidity": 81,
     "wind_speed": 4.12,
-    "lat": 48.3705,
+    "lat": 99.3705,
     "timestamp": "2023-12-31T23:42:39.563Z"
 }
 
