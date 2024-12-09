@@ -1,0 +1,166 @@
+{
+  "verticles": {
+    "de.urbanpulse.connector.sdk.inbound.InboundTriggerVerticle": {
+      "period": 180000,
+      "outputAddress": "Inbound"
+    },
+
+    "loadNextBikeDataVerticle": {
+      "classname": "de.urbanpulse.connector.sdk.inbound.HttpRequestVerticle",
+      "inputAddress": "Inbound",
+      "outputAddress": "PreProcessing",
+      "host": "api.nextbike.net",
+      "port": XX,
+      "path": "",
+      "encrypted": true,
+      "trustAll": false,
+      "pipelining": false
+    },
+
+    "de.urbanpulse.connector.sdk.core.runtime.preprocessing.PreProcessorVerticle": {
+      "inputAddress": "PreProcessing",
+      "outputAddress": "Processing",
+      "commands": [
+        {
+          "classname": "de.city.dksr.NextBikeFlattener"
+        }
+      ]
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.processing.DefaultProcessingVerticle": {
+      "inputAddress": "Processing",
+      "outputAddress": "Outbound"
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.outbound.SDKConnectorVerticle": {
+      "inputAddress": "Outbound",
+      "upManagement": {
+        "username": "",
+        "password": "",
+        "trustAll": true,
+        "baseUrl": ""
+      },
+      "connectorName": "NextBikeConnector",
+      "statementsConfig": {
+        "NextBikeEventTypeStatement": {
+          "query": "SELECT * FROM NextBikeEventType",
+          "targets": [
+            ""
+          ]
+        }
+      },
+      "eventSenderAddresses": {
+        "inputVertLogger": "loggerVerticle",
+        "inputVertHTTP": "httpVerticle"
+      },
+      "sensorEventFactoryConfig": {
+        "eventTypeName": "NextBikeEventType",
+        "eventTypeAcquisitionStrategy": "manual",
+        "eventType": {
+          "description": {
+            "uid": "id of the bike",
+            "lat": "lattitude of the bike",
+            "lon": "longitude of the bike",
+            "number": "number of the location",
+            "name": "name of the location",
+            "bookedBikes": "number of bikes booked",
+            "bikes": "number of bikes",
+            "bikesAvailable": "available bikes",
+            "bikeNumber": "number of the bike",
+            "bikeType": "type of the bike",
+            "lockTypes": "type of the lock for the bike",
+            "active": "active status of the bike",
+            "state": "status of the bike",
+            "electricLock": "electric lock status of the bike",
+            "boardComputer": "boardComputer of the bike ",
+            "pedelecBattery": "Battery details",
+            "batteryPack": "Battery details"
+          },
+          "config": {
+            "uid": "double",
+            "lat": "double",
+            "lon": "double",
+            "number": "double",
+            "name": "string",
+            "bookedBikes": "double",
+            "bikes": "double",
+            "bikesAvailable": "double",
+            "bikeNumber": "string",
+            "bikeType": "double",
+            "lockTypes": "string",
+            "active": "boolean",
+            "state": "string",
+            "electricLock": "boolean",
+            "boardComputer": "double",
+            "pedelecBattery": "double",
+            "batteryPack": "double"
+          }
+        },
+        "primaryKeyFields": ["bikeType"]
+      },
+      "categoryFactory": "de.urbanpulse.connector.sdk.core.CategoryFactoryJsonImpl",
+      "sensorEventFactory": "de.urbanpulse.connector.sdk.core.runtime.SensorEventFactoryJsonConfigImpl",
+      "sensorFactory": "de.urbanpulse.connector.sdk.core.SensorFactoryDefaultImpl"
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleHttp": {
+      "inputAddress": "httpVerticle",
+      "senderConfig": {
+        "url": "",
+        "connectorId": "filled by sdk",
+        "connectorKey": "filled by sdk",
+        "trustAll": true
+      },
+      "queueConfig": {
+      }
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleLogger": {
+      "inputAddress": "loggerVerticle",
+      "senderConfig": {
+      },
+      "queueConfig": {
+      }
+    }
+  },
+  "deploymentOrder": [
+    {
+      "verticle": "loadNextBikeDataVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.preprocessing.PreProcessorVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.processing.DefaultProcessingVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleHttp",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleLogger",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.outbound.SDKConnectorVerticle",
+      "instances": 1,
+      "isWorker": true,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.inbound.InboundTriggerVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    }
+  ]
+}
