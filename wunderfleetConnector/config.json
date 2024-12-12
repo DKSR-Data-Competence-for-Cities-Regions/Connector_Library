@@ -1,0 +1,166 @@
+{
+  "verticles": {
+    "de.urbanpulse.connector.sdk.inbound.InboundTriggerVerticle": {
+      "period": 300000,
+      "outputAddress": "Inbound"
+    },
+
+    "loadWunderFleetDataVerticle": {
+      "classname": "de.urbanpulse.connector.sdk.inbound.HttpRequestVerticle",
+      "inputAddress": "Inbound",
+      "outputAddress": "PreProcessing",
+      "host": "",
+      "port": XX,
+      "path": "",
+      "encrypted": true,
+      "trustAll": false,
+      "pipelining": false
+    },
+
+    "de.urbanpulse.connector.sdk.core.runtime.preprocessing.PreProcessorVerticle": {
+      "inputAddress": "PreProcessing",
+      "outputAddress": "Processing",
+      "commands": [
+        {
+          "classname": "de.city.dksr.WunderFleetFlattener"
+        }
+      ]
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.processing.DefaultProcessingVerticle": {
+      "inputAddress": "Processing",
+      "outputAddress": "Outbound"
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.outbound.SDKConnectorVerticle": {
+      "inputAddress": "Outbound",
+      "upManagement": {
+        "username": "",
+        "password": "",
+        "trustAll": true,
+        "baseUrl": ""
+      },
+      "connectorName": "WunderFleetOberhausenConnectorPilot1",
+      "statementsConfig": {
+        "wfEventTypeStatement": {
+          "query": "SELECT * FROM wfnEventType",
+          "targets": [
+            ""
+          ]
+        }
+      },
+      "eventSenderAddresses": {
+        "inputVertLogger": "loggerVerticle",
+        "inputVertHTTP": "httpVerticle"
+      },
+      "sensorEventFactoryConfig": {
+        "eventTypeName": "wfEventType",
+        "eventTypeAcquisitionStrategy": "manual",
+        "eventType": {
+          "description": {
+            "carId": "Id of the car",
+            "serviceType": "service type of the car",
+            "title": "car title",
+            "lat": "lattitude of the car",
+            "lon": "longitude of the car",
+            "licencePlate": "licenseplate of the car",
+            "fuelLevel": "fuel level of the car",
+            "vehicleStateId": "vehicle state id",
+            "vehicleTypeId": "vehicletypeID",
+            "pricingTime": "pricing time",
+            "pricingParking": "parking price",
+            "reservationState": "reservation state",
+            "address": "address",
+            "zipCode": "zipcode",
+            "city": "city",
+            "locationId": "location Id",
+            "vehicleType": "vehicle type"
+          },
+          "config": {
+            "carId": "double",
+            "serviceType": "double",
+            "title": "string",
+            "lat": "double",
+            "lon": "double",
+            "licencePlate": "string",
+            "fuelLevel": "double",
+            "vehicleStateId": "double",
+            "vehicleTypeId": "double",
+            "pricingTime": "string",
+            "pricingParking": "string",
+            "reservationState": "double",
+            "address": "string",
+            "zipCode": "string",
+            "city": "string",
+            "locationId": "double",
+            "vehicleType": "string"
+          }
+        },
+        "primaryKeyFields": ["vehicleTypeId"]
+      },
+      "categoryFactory": "de.urbanpulse.connector.sdk.core.CategoryFactoryJsonImpl",
+      "sensorEventFactory": "de.urbanpulse.connector.sdk.core.runtime.SensorEventFactoryJsonConfigImpl",
+      "sensorFactory": "de.urbanpulse.connector.sdk.core.SensorFactoryDefaultImpl"
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleHttp": {
+      "inputAddress": "httpVerticle",
+      "senderConfig": {
+        "url": "",
+        "connectorId": "filled by sdk",
+        "connectorKey": "filled by sdk",
+        "trustAll": true
+      },
+      "queueConfig": {
+      }
+    },
+    "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleLogger": {
+      "inputAddress": "loggerVerticle",
+      "senderConfig": {
+      },
+      "queueConfig": {
+      }
+    }
+  },
+  "deploymentOrder": [
+    {
+      "verticle": "loadWunderFleetDataVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.preprocessing.PreProcessorVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.processing.DefaultProcessingVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleHttp",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.outbound.EventSenderVerticleLogger",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.core.runtime.outbound.SDKConnectorVerticle",
+      "instances": 1,
+      "isWorker": true,
+      "isMultiThreaded": false
+    },
+    {
+      "verticle": "de.urbanpulse.connector.sdk.inbound.InboundTriggerVerticle",
+      "instances": 1,
+      "isWorker": false,
+      "isMultiThreaded": false
+    }
+  ]
+}
